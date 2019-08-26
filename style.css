@@ -1,0 +1,77 @@
+#siteheader {
+    margin: 0;
+    padding: 3%;
+    width: 100%;
+    background-color: rgb(0, 102, 255);
+    color: white;
+    display: block;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 2.75vw;
+    font-weight: bold;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+}
+
+button {
+    background-color: lightgrey;
+    display: block;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 14px;
+
+}
+
+#divthinks {
+    text-align: left;
+    font-family: 'Roboto', sans-serif;
+    font-size: 20px;
+    vertical-align: top;
+}
+
+
+.dropbtn {
+    background-color: grey;
+    color: white;
+    padding: 8px;
+    font-size: 14px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .dropdown {
+    position: relative;
+    display: inline-block;
+  }
+  
+  .dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 64px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+  }
+  
+  .dropdown-content a {
+    color: black;
+    padding: 4px 4px;
+    text-decoration: none;
+    display: block;
+    text-align: center;
+    font-family: 'Roboto', sans-serif;
+    font-size: 12px;
+  }
+  
+  .dropdown-content a:hover {background-color: #f1f1f1}
+  
+  .dropdown:hover .dropdown-content {
+    display: block;
+  }
+  
+  .dropdown:hover .dropbtn {
+    background-color: darkgray;
+  }
