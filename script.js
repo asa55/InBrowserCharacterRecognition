@@ -122,5 +122,54 @@ $('#mycanvas').mouseleave(function(e){
   paint = false;
 });
 
+
+// the touch handling was inspired by: https://github.com/bencentra/canvas/blob/master/signature/signature.js
+
+function getTouchPos(canvasDom, touchEvent) {
+  var rect = canvasDom.getBoundingClientRect();
+  return {
+    x: touchEvent.touches[0].clientX - rect.left,
+    y: touchEvent.touches[0].clientY - rect.top
+  };
+}
+
+context.canvas.addEventListener("touchstart", function (e) {
+  mousePos = getTouchPos(context.canvas, e);
+  var touch = e.touches[0];
+  var mouseEvent = new MouseEvent("mousedown", {
+    clientX: touch.clientX,
+    clientY: touch.clientY
+  });
+  context.canvas.dispatchEvent(mouseEvent);
+}, false);
+context.canvas.addEventListener("touchend", function (e) {
+  var mouseEvent = new MouseEvent("mouseup", {});
+  context.canvas.dispatchEvent(mouseEvent);
+}, false);
+context.canvas.addEventListener("touchmove", function (e) {
+  var touch = e.touches[0];
+  var mouseEvent = new MouseEvent("mousemove", {
+    clientX: touch.clientX,
+    clientY: touch.clientY
+  });
+  context.canvas.dispatchEvent(mouseEvent);
+}, false);
+
+document.body.addEventListener("touchstart", function (e) {
+  if (e.target == context.canvas) {
+    e.preventDefault();
+  }
+}, {passive: false});
+document.body.addEventListener("touchend", function (e) {
+  if (e.target == context.canvas) {
+    e.preventDefault();
+  }
+}, {passive: false});
+document.body.addEventListener("touchmove", function (e) {
+  if (e.target == context.canvas) {
+    e.preventDefault();
+  }
+}, {passive: false});
+
 document.addEventListener('DOMContentLoaded', getMyCurrentImageData);
 document.addEventListener('DOMContentLoaded', compileModel);
