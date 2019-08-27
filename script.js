@@ -27,6 +27,7 @@ function clearCanvas() {
   clickX = Array();
   clickY = Array();
   clickDrag = Array();
+  $('#divprediction').html("");
 }
 
 async function compileModel() {

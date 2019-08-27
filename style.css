@@ -19,6 +19,10 @@ button {
   vertical-align: top;
 }
 
+#divprediction {
+    text-align: center;
+}
+
 .dropbtn {
     background-color: grey;
     color: white;

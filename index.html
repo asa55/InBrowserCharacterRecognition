@@ -20,18 +20,13 @@
     </div>
     <div style="width: 99%;  background-attachment: fixed;">       
       <div style="display: inline-block; width: 256px;">
-        <canvas id="mycanvas" width="128" height="128" style="background-color: white; border: 1px solid black; margin-left: auto; margin-right: auto; margin-top: 32px; margin-bottom: 8px; display:block;">
+        <button class="dropbtn" style="display:block;width:128px;margin-left:auto;margin-right:auto;margin-top:16px;" onclick="clearCanvas()">Clear</button>
+        <canvas id="mycanvas" width="128" height="128" style="background-color: white; border: 1px solid black; margin-left: auto; margin-right: auto; margin-top: 8px; margin-bottom: 8px; display:block;">
         </canvas>        
         <table style="width:40%; margin:auto;">
           <td>
-            <button class="dropbtn" onclick="clearCanvas()">Clear</button>
-          </td>
-          <td>
-            <button onclick="runModel()" class="dropbtn">Train</button>
-          </td>
-          <td>
             <div class="dropdown">
-             <button id="classbutton" class="dropbtn">Class (0)</button>
+             <button id="classbutton" style="width:72px;" class="dropbtn">Class (0)</button>
              <div class="dropdown-content">
                <a onclick="currentClass(0)">0</a>
                <a onclick="currentClass(1)">1</a>
@@ -46,17 +41,15 @@
              </div>
             </div>
           </td>
+          <td>
+            <button onclick="runModel()" style="width:52px;" class="dropbtn">Train</button>
+          </td>
         </table>
       </div>
       <div id="divthinks" style="display: inline-block; margin-top: 32px;">
         <table>
           <tr>
-            <button onclick="makePrediction()" class="dropbtn"> <!--  I'll probably delete this and do live updates instead...  -->
-              Test
-            </button>
-          </tr>
-          <tr>
-            Neural Net Thinks You Drew a:
+            Neural Net Thinks You Drew the Number...
           </tr>
           <tr>
             <div id="divprediction">
