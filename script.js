@@ -32,6 +32,7 @@ function clearCanvas() {
 
 async function compileModel() {
   model.add(tf.layers.dense({inputShape: input.length, units: 512,}));
+  model.add(tf.layers.dense({units: 100, activation: 'sigmoid'}));
   model.add(tf.layers.dense({units: 10}));
   model.compile({
     optimizer: tf.train.adam(),
