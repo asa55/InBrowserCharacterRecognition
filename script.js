@@ -1,8 +1,4 @@
-// assumption - downsampling OK
-// assumption - alpha channel is OK (instead of blue, which would be equally accurate but wouldn't let you change colors)
-// doesn't support touchscreens yet
-// needs a way to tell the user it tried to train
-
+// Data I need to persist in a way that is accessible from document scope...
 var clickDrag = new Array();
 var clickX = new Array();
 var clickY = new Array();
@@ -12,8 +8,10 @@ var label = [1,0,0,0,0,0,0,0,0,0];
 var model = tf.sequential();
 var myCurrentArgMax = 0;
 var paint;
+var currentEpoch = 0;
 var userSelectedClass = 0;
 
+// Alphabetized functions
 function addClick(x, y, dragging)
 {
   clickX.push(x);
@@ -44,7 +42,7 @@ function currentClass(class_) {
   label = [0,0,0,0,0,0,0,0,0,0];
   label[class_] = 1;
   console.log("new class selected")
-  $('#classbutton').html('Class (' + class_ + ')')
+  runModel();
 }
 
 async function getMyCurrentImageData() {
@@ -64,12 +62,49 @@ async function getMyCurrentImageData() {
   }
 }
 
+function getTouchPos(canvasDom, touchEvent) {
+  var rect = canvasDom.getBoundingClientRect();
+  return {
+    x: touchEvent.touches[0].clientX - rect.left,
+    y: touchEvent.touches[0].clientY - rect.top
+  };
+}
+
+function incrementEpoch() {
+  currentEpoch++;
+  $('#divcurrepoch').html("(The neural net has been trained " + currentEpoch + " times so far.)<br><br><br>");
+}
+
 async function makePrediction() {
   getMyCurrentImageData()
-  // model.predict(tf.tensor2d(input, [1, input.length])).print() // the item to the left console logs the nn output, but the line below lets us use argmax and print to user. I know it's a little weird to look at, but the idea is to convert to a 1d tensor so that argmax works, then convert the argmax output to a scalar int for user display purposes.
-  myCurrentArgMax = ((tf.tensor((model.predict(tf.tensor2d(input, [1, input.length])).arraySync())[0])).argMax()).arraySync();
-  console.log(myCurrentArgMax)
-  $('#divprediction').html(myCurrentArgMax);
+  if ((tf.tensor2d(input, [1, input.length]).min().arraySync()) < 0) {
+    myCurrentArgMax = ((tf.tensor((model.predict(tf.tensor2d(input, [1, input.length])).arraySync())[0])).argMax()).arraySync();
+    console.log(myCurrentArgMax)
+    $('#divprediction').html(myCurrentArgMax);
+  } else {
+    $('#divprediction').html(" ");
+  }
+}
+
+async function pretrain(savedInput, savedLabel) {
+  var inputTensor = tf.tensor2d(savedInput, [1, savedInput.length]);
+  var labelTensor = tf.tensor2d(savedLabel, [1, savedLabel.length]);
+  await model.fit(inputTensor, labelTensor);
+  incrementEpoch();
+};
+
+async function pretrainOnEachClass() {
+  await pretrain(img0, [1,0,0,0,0,0,0,0,0,0]);
+  await pretrain(img1, [0,1,0,0,0,0,0,0,0,0]);
+  await pretrain(img2, [0,0,1,0,0,0,0,0,0,0]);
+  await pretrain(img3, [0,0,0,1,0,0,0,0,0,0]);
+  await pretrain(img4, [0,0,0,0,1,0,0,0,0,0]);
+  await pretrain(img5, [0,0,0,0,0,1,0,0,0,0]);
+  await pretrain(img6, [0,0,0,0,0,0,1,0,0,0]);
+  await pretrain(img7, [0,0,0,0,0,0,0,1,0,0]);
+  await pretrain(img8, [0,0,0,0,0,0,0,0,1,0]);
+  await pretrain(img9, [0,0,0,0,0,0,0,0,0,1]);
+  makePrediction();
 }
 
 function redraw(){
@@ -98,8 +133,11 @@ async function runModel() {
   await model.fit(inputTensor, labelTensor);
   console.log("ran model")
   makePrediction();
+  incrementEpoch();
 }
 
+
+// Mouse event handling
 $('#mycanvas').mousedown(function(e){
   var mouseX = e.pageX - this.offsetLeft;
   var mouseY = e.pageY - this.offsetTop;
@@ -125,16 +163,7 @@ $('#mycanvas').mouseleave(function(e){
 });
 
 
-// the touch handling was inspired by: https://github.com/bencentra/canvas/blob/master/signature/signature.js
-
-function getTouchPos(canvasDom, touchEvent) {
-  var rect = canvasDom.getBoundingClientRect();
-  return {
-    x: touchEvent.touches[0].clientX - rect.left,
-    y: touchEvent.touches[0].clientY - rect.top
-  };
-}
-
+// Touch event handling
 context.canvas.addEventListener("touchstart", function (e) {
   mousePos = getTouchPos(context.canvas, e);
   var touch = e.touches[0];
@@ -173,5 +202,7 @@ document.body.addEventListener("touchmove", function (e) {
   }
 }, {passive: false});
 
+
+// Initialization right after DOM load
 document.addEventListener('DOMContentLoaded', getMyCurrentImageData);
 document.addEventListener('DOMContentLoaded', compileModel);
