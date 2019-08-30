@@ -4,12 +4,15 @@
 ## This code is in beta. There are more features I intend to add for users who aren't familiar with neural nets to understand what's happening under the hood. This currently works on desktop and on mobile - please report any bugs in the issues section.
 
 ### Quick Start:
+* TL;DR: Open the web app, click "cheat" one or more times, draw something in the box.
+* .
 * The link takes you to a simple user interface with three buttons and a canvas
 * Draw anything you want in the canvas (you can train on up to 10 classes)
    * You'll see the neural net takes an initial guess - at this stage it's just a baby... It hasn't been trained at all yet so the result is based on a random initialization of the weights in the network.
-* The intention is for users to draw any digit 0 thru 9
+* The intention is for users to draw any digit 0 to 9
 * Select the digit you drew from the dropdown menu (which is only relevant for training)
-* Click the "train" button. (The sub-bullets are optional to read - FYE only)
+   * This will automatically train "batch size 1" for a single epoch based on what you drew in the box.
+   * The neural net may or may not update its guess, but you did influence the learning process by adding a training sample.
    * Behind the scenes, the image is downsampled by a factor of 4 (2 pixels in the horizontal direction and 2 in the vertical direction).
    * The result is stretched into a vector.
    * The vector has nonnegative entries. A new vector is created from this where nonzero values are mapped to 1 and the remaining entries are mapped to -1.
