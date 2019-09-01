@@ -23,37 +23,29 @@
   </head>
   <body>
     <div class="siteheader">
-      Train a Neural Net to Recognize Handwritten Digits!
+      Train a Neural Net to Recognize Handwritten Letters!
     </div>
     <div class="siteheader" style="background-color:rgb(59, 137, 255);font-size: 20px;padding:1%;">
-        There's a baby neural net living in your browser that hasn't learned anything about numbers.
+        Oh no! There's a baby neural net living in your browser that hasn't learned its alphabet...
     </div>
     <div class="siteheader"  style="background-color:rgb(136, 183, 255);font-size: 18px;padding:1%;">
-      Be a dear and teach it to recognize the numbers 0 to 9!
+      Be a dear and teach it to recognize A, B, and C!
     </div>
     <div style="width: 99%;  background-attachment: fixed;">       
       <div style="display: inline-block; width: 256px;padding-left: 1%;padding-right: 1%;">
-        <button class="dropbtn" style="display:block;width:128px;margin-left:auto;margin-right:auto;margin-top:16px;" onclick="clearCanvas()">Clear</button>
         <canvas id="mycanvas" width="128" height="128" style="background-color: white; border: 1px solid black; margin-left: auto; margin-right: auto; margin-top: 8px; margin-bottom: 8px; display:block;">
         </canvas>        
         <table style="width:40%; margin:auto;">
           <td>
+            <button class="dropbtn" style="display:block;width:128px;margin-left:auto;margin-right:auto;margin-bottom:16px;" onclick="clearCanvas()">Clear</button>
             <div class="dropdown">
              <button id="classbutton" style="width:128px;" class="dropbtn">Train Neural Net</button>
              <div class="dropdown-content">
-               <a onclick="currentClass(0)">This is a 0</a>
-               <a onclick="currentClass(1)">This is a 1</a>
-               <a onclick="currentClass(2)">This is a 2</a>
-               <a onclick="currentClass(3)">This is a 3</a>
-               <a onclick="currentClass(4)">This is a 4</a>
-               <a onclick="currentClass(5)">This is a 5</a>
-               <a onclick="currentClass(6)">This is a 6</a>
-               <a onclick="currentClass(7)">This is a 7</a>
-               <a onclick="currentClass(8)">This is an 8</a>
-               <a onclick="currentClass(9)">This is a 9</a>
+               <a onclick="currentClass(0)">This is an A</a>
+               <a onclick="currentClass(1)">This is a B</a>
+               <a onclick="currentClass(2)">This is a C</a>
              </div>
             </div>
-            <button class="dropbtn" style="display:block;width:128px;margin-left:auto;margin-right:auto;margin-top:16px;" onclick="pretrainOnEachClass()">Cheat (auto-trains on 0-9)</button>
           </td>
         </table>
       </div>
@@ -65,7 +57,7 @@
             </div>
           </tr>
           <tr>
-            Neural Net Thinks You Drew the Number...
+            Neural Net Thinks This is the Letter...
           </tr>
           <tr>
             <div id="divprediction">

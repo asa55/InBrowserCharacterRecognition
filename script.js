@@ -4,7 +4,7 @@ var clickX = new Array();
 var clickY = new Array();
 var context = document.getElementById('mycanvas').getContext("2d");
 var input = [];
-var label = [1,0,0,0,0,0,0,0,0,0];
+var label = [1,0,0];
 var model = tf.sequential();
 var myCurrentArgMax = 0;
 var paint;
@@ -30,8 +30,8 @@ function clearCanvas() {
 
 async function compileModel() {
   model.add(tf.layers.dense({inputShape: input.length, units: 512,}));
-  model.add(tf.layers.dense({units: 100, activation: 'sigmoid'}));
-  model.add(tf.layers.dense({units: 10}));
+  model.add(tf.layers.dense({units: 15, activation: 'sigmoid'}));
+  model.add(tf.layers.dense({units: 3}));
   model.compile({
     optimizer: tf.train.adam(),
     loss: tf.losses.softmaxCrossEntropy,
@@ -39,9 +39,8 @@ async function compileModel() {
 }
 
 function currentClass(class_) {
-  label = [0,0,0,0,0,0,0,0,0,0];
+  label = [0,0,0];
   label[class_] = 1;
-  console.log("new class selected")
   runModel();
 }
 
@@ -78,9 +77,19 @@ function incrementEpoch() {
 async function makePrediction() {
   getMyCurrentImageData()
   if ((tf.tensor2d(input, [1, input.length]).min().arraySync()) < 0) {
+    classString = "";
     myCurrentArgMax = ((tf.tensor((model.predict(tf.tensor2d(input, [1, input.length])).arraySync())[0])).argMax()).arraySync();
-    console.log(myCurrentArgMax)
-    $('#divprediction').html(myCurrentArgMax);
+    switch (myCurrentArgMax) {
+      case 0: classString = 'A';
+        break;
+      case 1: classString = 'B';
+        break;
+      case 2: classString = 'C';
+        break;
+      default:
+      classString = 'Neural Net is confused...';
+    }
+    $('#divprediction').html(classString);
   } else {
     $('#divprediction').html(" ");
   }
@@ -94,16 +103,9 @@ async function pretrain(savedInput, savedLabel) {
 };
 
 async function pretrainOnEachClass() {
-  await pretrain(img0, [1,0,0,0,0,0,0,0,0,0]);
-  await pretrain(img1, [0,1,0,0,0,0,0,0,0,0]);
-  await pretrain(img2, [0,0,1,0,0,0,0,0,0,0]);
-  await pretrain(img3, [0,0,0,1,0,0,0,0,0,0]);
-  await pretrain(img4, [0,0,0,0,1,0,0,0,0,0]);
-  await pretrain(img5, [0,0,0,0,0,1,0,0,0,0]);
-  await pretrain(img6, [0,0,0,0,0,0,1,0,0,0]);
-  await pretrain(img7, [0,0,0,0,0,0,0,1,0,0]);
-  await pretrain(img8, [0,0,0,0,0,0,0,0,1,0]);
-  await pretrain(img9, [0,0,0,0,0,0,0,0,0,1]);
+  await pretrain(img0, [1,0,0]);
+  await pretrain(img1, [0,1,0]);
+  await pretrain(img2, [0,0,1]);
   makePrediction();
 }
 
@@ -131,7 +133,6 @@ async function runModel() {
   var inputTensor = tf.tensor2d(input, [1, input.length]);
   var labelTensor = tf.tensor2d(label, [1, label.length]);
   await model.fit(inputTensor, labelTensor);
-  console.log("ran model")
   makePrediction();
   incrementEpoch();
 }
