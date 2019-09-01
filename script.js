@@ -113,7 +113,7 @@ function redraw(){
   context.clearRect(0, 0, context.canvas.width, context.canvas.height);
   context.strokeStyle = "#0000ff";
   context.lineJoin = "round";
-  context.lineWidth = 32;
+  context.lineWidth = 16;
               
   for(var i=0; i < clickX.length; i++) {
     context.beginPath();
