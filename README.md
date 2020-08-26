@@ -1,5 +1,5 @@
 # A Simple, Gamified TensorflowJS Application
-## [Train a neural net to recognize handwritten characters live in your browser!](https://asa55.github.io/InBrowserCharacterRecognition/index.html)
+## [Train a neural net to recognize handwritten characters live in your browser!](https://asa55.github.io/tfjs-demo/index.html)
 
 ### Quick Start:
 * TL;DR: Open the web app, draw a letter, click train, or clear the canvas.
